@@ -79,5 +79,29 @@ run_backup
 clean_up
 trap - EXIT
 EOF
+  touch /home/ubuntu/traptest
+  chmod +x /home/ubuntu/traptest
+  tee /home/ubuntu/traptest <<'EOF'
+#!/bin/bash
+set -e
+
+function work {
+  echo "Doing some work..."
+  sleep 2
+}
+
+function processing {
+  work && work && work && work
+}
+
+function cleanup {
+  echo "Cleaning up"
+}
+
+trap cleanup EXIT
+processing
+cleanup
+trap - EXIT
+EOF
   SHELL
 end
